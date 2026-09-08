@@ -1,6 +1,6 @@
 # 📡 Blog App — API Endpoints
 
-> **Base URL:** `http://localhost:3000`
+> **Base URL:** `http://localhost:3001`
 
 All requests and responses use **JSON** (`Content-Type: application/json`).
 
