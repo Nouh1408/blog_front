@@ -20,13 +20,17 @@ export interface ApiErrorResponse {
   success?: boolean;
 }
 
-export const authService={
-    register : async(userData:Register)=>{
-      try {
-        const response = await api.post('/auth/register',userData)
-        return response.data as RegisterResponse;
-      } catch (error) {
-        
-      }
+export const authService = {
+  register: async (userData: Register): Promise<RegisterResponse> => {
+    try {
+      const response = await api.post<RegisterResponse>("/auth/register", userData);
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "An unexpected error occurred during registration.";
+      throw new Error(message);
     }
-}
+  },
+};
