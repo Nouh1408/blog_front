@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { authService, Register } from "../_services/authServices";
+import { authService, Register } from "../../_services/authServices";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState<Register>({
@@ -15,7 +15,10 @@ export default function RegisterPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<{ message: string; userId: number } | null>(null);
+  const [success, setSuccess] = useState<{
+    message: string;
+    userId: number;
+  } | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -237,7 +240,12 @@ export default function RegisterPage() {
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -246,7 +254,12 @@ export default function RegisterPage() {
                     />
                   </svg>
                 ) : (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
