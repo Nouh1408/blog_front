@@ -180,7 +180,7 @@ export default function RegisterPage() {
                 required
                 value={formData.firstName}
                 onChange={handleChange}
-                placeholder="Ahmed"
+                placeholder="Diaa"
                 className="w-full px-4 py-3 rounded-xl border border-secondary/40 bg-background/50 text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm font-medium"
               />
             </div>
@@ -198,7 +198,7 @@ export default function RegisterPage() {
                 required
                 value={formData.lastName}
                 onChange={handleChange}
-                placeholder="Nouh"
+                placeholder="el awady"
                 className="w-full px-4 py-3 rounded-xl border border-secondary/40 bg-background/50 text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm font-medium"
               />
             </div>
@@ -219,7 +219,7 @@ export default function RegisterPage() {
               required
               value={formData.email}
               onChange={handleChange}
-              placeholder="ahmed@example.com"
+              placeholder="email@example.com"
               className="w-full px-4 py-3 rounded-xl border border-secondary/40 bg-background/50 text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm font-medium"
             />
           </div>
