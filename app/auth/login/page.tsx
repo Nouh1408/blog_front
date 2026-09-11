@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { loginService, Login } from "../../_services/authServices";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState<Login>({
     email: "",
     password: "",
@@ -42,6 +44,9 @@ export default function LoginPage() {
       setSuccess(response.message || "Logged in successfully!");
       // Typically, you'd store the response.token in localStorage/cookies here
       // localStorage.setItem("token", response.token);
+      setTimeout(() => {
+        router.push('/');
+      }, 2000);
       
     } catch (err: any) {
       setError(err.message || "Failed to login. Please check your credentials.");
