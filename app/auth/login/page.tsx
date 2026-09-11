@@ -266,7 +266,7 @@ export default function LoginPage() {
           Don't have an account yet?{" "}
           <Link
             href="/auth/register"
-            className="text-primary hover:text-accent font-bold transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-accent after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
+            className="text-primary hover:text-accent font-bold transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-accent after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
           >
             Register
           </Link>
