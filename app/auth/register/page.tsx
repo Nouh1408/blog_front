@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { authService, Register } from "../../_services/authServices";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState<Register>({
     firstName: "",
     lastName: "",
@@ -59,6 +61,10 @@ export default function RegisterPage() {
         message: response.message || "User registered successfully!",
         userId: response.userId,
       });
+      setTimeout(() => {
+        router.push('/auth/login');
+      }, 2000);
+
 
       // Clear the form on success
       setFormData({
@@ -76,13 +82,17 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md bg-white dark:bg-zinc-900 shadow-xl rounded-2xl p-8 border border-zinc-200/80 dark:border-zinc-800 transition-all">
+    <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center px-4 py-12 bg-background relative overflow-hidden">
+      {/* Decorative background blobs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[50%] bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-5%] w-[35%] h-[45%] bg-accent/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="w-full max-w-md bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl p-8 sm:p-10 border border-secondary/30 relative z-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 mb-3">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/20 text-primary mb-4 shadow-sm shadow-primary/10">
             <svg
-              className="w-6 h-6"
+              className="w-7 h-7"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -95,20 +105,20 @@ export default function RegisterPage() {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-            Create an Account
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
+            Create Account
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Join our blog community today
+          <p className="text-sm font-medium text-foreground/60 mt-2">
+            Join the Libre community today
           </p>
         </div>
 
         {/* Success Banner */}
         {success && (
-          <div className="mb-6 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300">
+          <div className="mb-8 p-4 rounded-2xl bg-accent/20 border border-accent/40 text-[#02330a]">
             <div className="flex items-start gap-3">
               <svg
-                className="w-5 h-5 mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400"
+                className="w-5 h-5 mt-0.5 shrink-0 text-accent"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -116,13 +126,13 @@ export default function RegisterPage() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
               <div>
-                <p className="font-semibold text-sm">{success.message}</p>
-                <p className="text-xs text-emerald-700 dark:text-emerald-400/90 mt-0.5">
+                <p className="font-bold text-sm">{success.message}</p>
+                <p className="text-xs font-semibold opacity-90 mt-1">
                   Your Account ID is #{success.userId}.
                 </p>
               </div>
@@ -132,10 +142,10 @@ export default function RegisterPage() {
 
         {/* Error Banner */}
         {error && (
-          <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 text-red-800 dark:text-red-300">
+          <div className="mb-8 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700">
             <div className="flex items-start gap-3">
               <svg
-                className="w-5 h-5 mt-0.5 shrink-0 text-red-600 dark:text-red-400"
+                className="w-5 h-5 mt-0.5 shrink-0 text-red-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -143,25 +153,25 @@ export default function RegisterPage() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <p className="text-sm font-medium">{error}</p>
+              <p className="text-sm font-semibold">{error}</p>
             </div>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Name Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label
                 htmlFor="firstName"
-                className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5"
+                className="block text-xs font-bold text-foreground/70 uppercase tracking-wider mb-2"
               >
-                First Name <span className="text-red-500">*</span>
+                First Name
               </label>
               <input
                 id="firstName"
@@ -171,15 +181,15 @@ export default function RegisterPage() {
                 value={formData.firstName}
                 onChange={handleChange}
                 placeholder="Ahmed"
-                className="w-full px-3.5 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-secondary/40 bg-background/50 text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm font-medium"
               />
             </div>
             <div>
               <label
                 htmlFor="lastName"
-                className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5"
+                className="block text-xs font-bold text-foreground/70 uppercase tracking-wider mb-2"
               >
-                Last Name <span className="text-red-500">*</span>
+                Last Name
               </label>
               <input
                 id="lastName"
@@ -189,7 +199,7 @@ export default function RegisterPage() {
                 value={formData.lastName}
                 onChange={handleChange}
                 placeholder="Nouh"
-                className="w-full px-3.5 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-secondary/40 bg-background/50 text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm font-medium"
               />
             </div>
           </div>
@@ -198,9 +208,9 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="email"
-              className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5"
+              className="block text-xs font-bold text-foreground/70 uppercase tracking-wider mb-2"
             >
-              Email Address <span className="text-red-500">*</span>
+              Email Address
             </label>
             <input
               id="email"
@@ -210,7 +220,7 @@ export default function RegisterPage() {
               value={formData.email}
               onChange={handleChange}
               placeholder="ahmed@example.com"
-              className="w-full px-3.5 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border border-secondary/40 bg-background/50 text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm font-medium"
             />
           </div>
 
@@ -218,9 +228,9 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5"
+              className="block text-xs font-bold text-foreground/70 uppercase tracking-wider mb-2"
             >
-              Password <span className="text-red-500">*</span>
+              Password
             </label>
             <div className="relative">
               <input
@@ -231,17 +241,17 @@ export default function RegisterPage() {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className="w-full pl-3.5 pr-10 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all text-sm"
+                className="w-full pl-4 pr-12 py-3 rounded-xl border border-secondary/40 bg-background/50 text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm font-medium"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 focus:outline-none"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-foreground/40 hover:text-primary transition-colors focus:outline-none"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <svg
-                    className="w-4 h-4"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -255,7 +265,7 @@ export default function RegisterPage() {
                   </svg>
                 ) : (
                   <svg
-                    className="w-4 h-4"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -282,9 +292,9 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="dob"
-              className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5"
+              className="block text-xs font-bold text-foreground/70 uppercase tracking-wider mb-2"
             >
-              Date of Birth <span className="text-red-500">*</span>
+              Date of Birth
             </label>
             <input
               id="dob"
@@ -293,7 +303,7 @@ export default function RegisterPage() {
               required
               value={formData.dob}
               onChange={handleChange}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border border-secondary/40 bg-background/50 text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm font-medium"
             />
           </div>
 
@@ -301,12 +311,12 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full mt-2 py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-60 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full mt-4 py-3.5 px-4 rounded-xl bg-primary hover:bg-accent text-foreground font-bold text-sm shadow-lg shadow-primary/25 focus:outline-none focus:ring-2 focus:ring-primary/60 disabled:opacity-60 disabled:shadow-none disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 cursor-pointer border border-primary/20"
           >
             {isLoading ? (
               <>
                 <svg
-                  className="animate-spin h-4 w-4 text-white"
+                  className="animate-spin h-5 w-5 text-foreground"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -334,11 +344,11 @@ export default function RegisterPage() {
         </form>
 
         {/* Footer Link */}
-        <div className="mt-6 text-center text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="mt-8 text-center text-sm font-medium text-foreground/60">
           Already have an account?{" "}
           <Link
-            href="/login"
-            className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+            href="/auth/login"
+            className="text-primary hover:text-accent font-bold transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-accent after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
           >
             Log in
           </Link>
