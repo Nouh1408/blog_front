@@ -9,11 +9,11 @@ export default function Navbar() {
           href="/"
           className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-900 dark:text-zinc-100 hover:opacity-90 transition-opacity"
         >
-          <span className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-sm font-black shadow-sm shadow-blue-500/30">
-            B
+          <span className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-sm font-black shadow-sm shadow-blue-500/30 ">
+            L
           </span>
-          <span>
-            Blog<span className="text-blue-600">.</span>
+          <span className="hover:text-blue-600 hover:scale-110 transition-all">
+            Libre<span className="hover:animate-bounce hover:text-blue-600 hover:scale-110 transition-all">.</span>
           </span>
         </Link>
 
@@ -29,14 +29,14 @@ export default function Navbar() {
           <span className="h-4 w-px bg-zinc-200 dark:bg-zinc-800" aria-hidden="true" />
 
           <Link
-            href="/login"
+            href="/auth/login"
             className="text-sm font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-zinc-50 transition-colors"
           >
             Log in
           </Link>
 
           <Link
-            href="/auth"
+            href="/auth/register"
             className="text-sm font-medium px-3.5 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow transition-all"
           >
             Register
