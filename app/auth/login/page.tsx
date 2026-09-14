@@ -4,9 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { loginService, Login } from "../../_services/authServices";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../_store/store";
+import { setToken, setUser } from "@/app/_store/slices/authSlice";
 
 export default function LoginPage() {
   const router = useRouter();
+  const dispatch: AppDispatch = useDispatch();
   const [formData, setFormData] = useState<Login>({
     email: "",
     password: "",
@@ -40,16 +44,29 @@ export default function LoginPage() {
         email: formData.email.trim(),
         password: formData.password,
       });
+      dispatch(setToken(response.token));
+      localStorage.setItem("token", response.token);
+
+      const payload = JSON.parse(atob(response.token.split(".")[1]));
+      dispatch(
+        setUser({
+          id: payload.id,
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          email: payload.email,
+        }),
+      );
 
       setSuccess(response.message || "Logged in successfully!");
       // Typically, you'd store the response.token in localStorage/cookies here
       // localStorage.setItem("token", response.token);
       setTimeout(() => {
-        router.push('/');
+        router.push("/");
       }, 2000);
-      
     } catch (err: any) {
-      setError(err.message || "Failed to login. Please check your credentials.");
+      setError(
+        err.message || "Failed to login. Please check your credentials.",
+      );
     } finally {
       setIsLoading(false);
     }
