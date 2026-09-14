@@ -8,13 +8,18 @@ All requests and responses use **JSON** (`Content-Type: application/json`).
 
 ## Table of Contents
 
-| #   | Method     | Endpoint       | Description              |
-| --- | ---------- | -------------- | ------------------------ |
-| 1   | `POST`     | /auth/register | Register a new user      |
-| 2   | `POST`     | /auth/login    | Login an existing user   |
-| 3   | `GET`      | /user/:id      | Get user profile         |
-| 4   | `PUT`      | /user/:id      | Update user profile      |
-| 5   | `DELETE`   | /user/:id      | Soft-delete a user       |
+| #   | Method     | Endpoint        | Description              |
+| --- | ---------- | --------------- | ------------------------ |
+| 1   | `POST`     | /auth/register  | Register a new user      |
+| 2   | `POST`     | /auth/login     | Login an existing user   |
+| 3   | `GET`      | /user/all       | List all users           |
+| 4   | `GET`      | /user/search    | Search users by name     |
+| 5   | `GET`      | /user/:id       | Get user profile         |
+| 6   | `PUT`      | /user/:id       | Update user profile      |
+| 7   | `DELETE`   | /user/:id       | Soft-delete a user       |
+| 8   | `POST`     | /blog           | Create a new blog        |
+| 9   | `GET`      | /blog           | Get all blogs            |
+| 10  | `GET`      | /blog/:id       | Get a specific blog      |
 
 ---
 
@@ -136,7 +141,73 @@ Authenticates a user by email and password. If the user was previously soft-dele
 
 ## User
 
-### 3. Get Profile
+### 3. List All Users
+
+`GET /user/all`
+
+Returns a list of all users (including deleted ones).
+
+**Responses:**
+
+```jsonc
+// ✅ 200 OK
+{
+  "message": "success",
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "firstName": "Ahmed",
+      "lastName": "Nouh",
+      "email": "ahmed@example.com",
+      "dob": "2000-01-15",
+      "status": "inactive",
+      "deleted": 0
+    }
+  ]
+}
+```
+
+---
+
+### 4. Search Users
+
+`GET /user/search`
+
+Searches for users whose first or last name starts with the given query string.
+
+**Query Params:**
+
+| Param | Type     | Required | Description                        |
+| ----- | -------- | -------- | ---------------------------------- |
+| name  | `string` | ✅       | Name prefix to search for          |
+
+**Example:** `GET /user/search?name=Ahm`
+
+**Responses:**
+
+```jsonc
+// ✅ 200 OK
+{
+  "message": "success",
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "firstName": "Ahmed",
+      "lastName": "Nouh",
+      "email": "ahmed@example.com",
+      "dob": "2000-01-15",
+      "status": "inactive",
+      "deleted": 0
+    }
+  ]
+}
+```
+
+---
+
+### 5. Get Profile
 
 `GET /user/:id`
 
@@ -172,7 +243,7 @@ Retrieves the public profile for a user. Only returns non-deleted users.
 
 ---
 
-### 4. Update Profile
+### 6. Update Profile
 
 `PUT /user/:id`
 
@@ -222,7 +293,7 @@ Updates user information. All body fields are **optional** — any omitted field
 
 ---
 
-### 5. Delete User (Soft Delete)
+### 7. Delete User (Soft Delete)
 
 `DELETE /user/:id`
 
@@ -246,6 +317,131 @@ Marks the user as deleted (`deleted = true`) without removing the record from th
 // ❌ 404 Not Found
 {
   "message": "user not found",
+  "success": false
+}
+```
+
+---
+
+## Blog
+
+### 8. Create Blog
+
+`POST /blog`
+
+Creates a new blog post. The specified `userId` must exist in the database.
+
+**Request Body:**
+
+```json
+{
+  "title": "My First Blog",
+  "content": "This is the blog content...",
+  "userId": 1
+}
+```
+
+| Field    | Type     | Required | Description                    |
+| -------- | -------- | -------- | ------------------------------ |
+| title    | `string` | ✅       | Blog title                     |
+| content  | `string` | ✅       | Blog body content              |
+| userId   | `int`    | ✅       | ID of the author (must exist)  |
+
+**Responses:**
+
+```jsonc
+// ✅ 201 Created
+{
+  "message": "blog created",
+  "success": true,
+  "data": {
+    "insertId": 1
+  }
+}
+
+// ❌ 404 Not Found — user doesn't exist
+{
+  "message": "user not found",
+  "success": false
+}
+```
+
+---
+
+### 9. Get All Blogs
+
+`GET /blog`
+
+Returns all blog posts with their author information (via `LEFT JOIN` on `users`).
+
+**Responses:**
+
+```jsonc
+// ✅ 200 OK
+{
+  "message": "done",
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "title": "My First Blog",
+      "content": "This is the blog content...",
+      "created_at": "2026-09-10T12:00:00.000Z",
+      "updated_at": "2026-09-10T12:00:00.000Z",
+      "userId": 1,
+      "firstName": "Ahmed",
+      "lastName": "Nouh",
+      "email": "ahmed@example.com"
+    }
+  ]
+}
+
+// ❌ 404 Not Found — no blogs exist
+{
+  "message": "no blogs found",
+  "success": false
+}
+```
+
+---
+
+### 10. Get Specific Blog
+
+`GET /blog/:id`
+
+Returns a single blog post by its ID, including author information.
+
+**URL Params:**
+
+| Param | Type  | Description          |
+| ----- | ----- | -------------------- |
+| id    | `int` | The blog's ID        |
+
+**Responses:**
+
+```jsonc
+// ✅ 200 OK
+{
+  "message": "done",
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "title": "My First Blog",
+      "content": "This is the blog content...",
+      "created_at": "2026-09-10T12:00:00.000Z",
+      "updated_at": "2026-09-10T12:00:00.000Z",
+      "userId": 1,
+      "firstName": "Ahmed",
+      "lastName": "Nouh",
+      "email": "ahmed@example.com"
+    }
+  ]
+}
+
+// ❌ 404 Not Found
+{
+  "message": "no blogs found",
   "success": false
 }
 ```
