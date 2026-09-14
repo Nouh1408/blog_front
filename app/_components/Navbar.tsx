@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuthStatus from "./AuthStatus";
 
 export default function Navbar() {
   return (
@@ -28,19 +29,9 @@ export default function Navbar() {
 
           <span className="h-4 w-px bg-secondary/50" aria-hidden="true" />
 
-          <Link
-            href="/auth/login"
-            className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-          >
-            Log in
-          </Link>
+          <AuthStatus />
 
-          <Link
-            href="/auth/register"
-            className="text-sm font-semibold px-4 py-1.5 rounded-full bg-primary hover:bg-accent text-foreground shadow-sm hover:shadow transition-all"
-          >
-            Register
-          </Link>
+         
         </div>
       </div>
     </nav>
