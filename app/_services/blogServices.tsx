@@ -18,6 +18,20 @@ export interface BlogsResponse {
   data: Blog[];
 }
 
+export interface CreateBlogRequest {
+  title: string;
+  content: string;
+  userId: number;
+}
+
+export interface CreateBlogResponse {
+  message: string;
+  success: boolean;
+  data: {
+    insertId: number;
+  };
+}
+
 export const blogService = {
   getAllBlogs: async (): Promise<Blog[]> => {
     try {
@@ -35,5 +49,17 @@ export const blogService = {
       throw new Error(message);
     }
   },
-};
 
+  createBlog: async (blogData: CreateBlogRequest): Promise<CreateBlogResponse> => {
+    try {
+      const response = await api.post<CreateBlogResponse>("/blog", blogData);
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to create blog.";
+      throw new Error(message);
+    }
+  },
+};
