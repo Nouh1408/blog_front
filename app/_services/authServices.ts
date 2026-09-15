@@ -25,11 +25,20 @@ export interface Login{
   password:string
 }
 
-export interface LoginResponse{
-  message:string;
-  success:boolean;
-  token:string;
+export interface LoginResponse {
+  message: string;
+  success: boolean;
+  data: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    dob: string;
+    status: string;
+    deleted: number;
+  };
 }
+
 
 export const authService = {
   register: async (userData: Register): Promise<RegisterResponse> => {
