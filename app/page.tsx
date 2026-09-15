@@ -1,8 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import bgImage from "./assets/images/Bg.jpg";
+import { useSelector } from "react-redux";
+import { RootState } from "./_store/store";
 
 export default function Home() {
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   return (
     <div className="flex flex-col flex-1">
       {/* Hero Section with Background Image */}
@@ -38,26 +44,50 @@ export default function Home() {
             there's always something new to explore.
           </p>
 
+          {/* Action Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <Link
-              href="/auth/register"
-              className="px-6 py-3 rounded-full bg-primary hover:bg-accent text-foreground font-semibold shadow-md hover:shadow-lg transition-all"
-            >
-              Get Started
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                href="/blogs"
+                className="px-8 py-3.5 rounded-full bg-primary hover:bg-accent text-foreground font-semibold shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+              >
+                <span>Explore Blogs</span>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/auth/register"
+                  className="px-6 py-3 rounded-full bg-primary hover:bg-accent text-foreground font-semibold shadow-md hover:shadow-lg transition-all"
+                >
+                  Get Started
+                </Link>
 
-            <Link
-              href="/auth/login"
-              className="px-6 py-3 rounded-full border border-secondary/70 bg-background/60 backdrop-blur-sm text-foreground hover:bg-secondary/20 font-medium transition-all"
-            >
-              Sign In
-            </Link>
+                <Link
+                  href="/auth/login"
+                  className="px-6 py-3 rounded-full border border-secondary/70 bg-background/60 backdrop-blur-sm text-foreground hover:bg-secondary/20 font-medium transition-all"
+                >
+                  Sign In
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </section>
-      <section>
-        
-      </section>
+
+      <section>{/* Future sections */}</section>
     </div>
   );
 }
