@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "../_store/store";
 import { blogService, Blog } from "../_services/blogServices";
 
 export default function BlogsPage() {
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +57,19 @@ export default function BlogsPage() {
             </p>
           </div>
 
-          {/* Search Input */}
+          {/* Search + Create */}
+          <div className="flex items-center gap-3">
+            {isAuthenticated && (
+              <Link
+                href="/blogs/create"
+                className="shrink-0 px-4 py-2.5 rounded-xl bg-primary hover:bg-accent text-foreground font-semibold text-sm shadow-sm hover:shadow transition-all flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                </svg>
+                Write a Post
+              </Link>
+            )}
           <div className="w-full md:w-72">
             <div className="relative">
               <input
@@ -78,6 +93,7 @@ export default function BlogsPage() {
                 />
               </svg>
             </div>
+          </div>
           </div>
         </div>
 
