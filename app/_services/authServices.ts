@@ -28,6 +28,8 @@ export interface Login{
 export interface LoginResponse {
   message: string;
   success: boolean;
+  accessToken: string;
+  refreshToken: string;
   data: {
     id: number;
     firstName: string;
@@ -36,6 +38,7 @@ export interface LoginResponse {
     dob: string;
     status: string;
     deleted: number;
+    role?: "user" | "admin";
   };
 }
 

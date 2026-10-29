@@ -48,24 +48,31 @@ export default function LoginPage() {
 
       console.log("LOGIN RESPONSE:", JSON.stringify(response, null, 2));
 
-      dispatch(setUser({
-        id: response.data.id,
-        firstName: response.data.firstName,
-        lastName: response.data.lastName,
-        email: response.data.email,
-      }));
+      // 1. Save tokens and user in localStorage for persistence and API interceptor
+      if (typeof window !== "undefined") {
+        localStorage.setItem("accessToken", response.accessToken);
+        localStorage.setItem("refreshToken", response.refreshToken);
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
 
+      // 2. Update Redux store
+      dispatch(
+        setUser({
+          id: response.data.id,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          email: response.data.email,
+        })
+      );
 
       setSuccess(response.message || "Logged in successfully!");
-      // Typically, you'd store the response.token in localStorage/cookies here
-      // localStorage.setItem("token", response.token);
       setTimeout(() => {
         router.push("/");
       }, 2000);
     } catch (err: any) {
       console.log("LOGIN ERROR:", err);
       setError(
-        err.message || "Failed to login. Please check your credentials.",
+        err.message || "Failed to login. Please check your credentials."
       );
     } finally {
       setIsLoading(false);
